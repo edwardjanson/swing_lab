@@ -45,6 +45,8 @@ public class EditEmployee extends javax.swing.JFrame {
         } 
                 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(jobsArray));
+        
+        jComboBox1.setSelectedIndex(0);
     }
     
     public void populateArrayList() {
@@ -131,11 +133,21 @@ public class EditEmployee extends javax.swing.JFrame {
         jLabel6.setText("Employee staff number:");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/swing/lab/save.png"))); // NOI18N
         jButton1.setText("Save");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/swing/lab/delete.png"))); // NOI18N
         jButton2.setText("Delete");
@@ -216,6 +228,31 @@ public class EditEmployee extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        int selectedIndex = jComboBox1.getSelectedIndex();
+        
+        jTextField1.setText(employees.get(selectedIndex).getFirstName());
+        jTextField2.setText(employees.get(selectedIndex).getLastName());
+        jTextField3.setText(employees.get(selectedIndex).getStaffNr()+"");
+        
+        Job job = employees.get(selectedIndex).getJob();
+        
+        int index = 0;
+        
+        for (int i = 0; i < jobs.size(); i++) {
+            if (jobs.get(i).equals(job)) {
+                index = i;
+                break;
+            }
+        }
+        
+        jComboBox2.setSelectedIndex(index);
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
