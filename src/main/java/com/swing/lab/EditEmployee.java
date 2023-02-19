@@ -49,6 +49,42 @@ public class EditEmployee extends javax.swing.JFrame {
         jComboBox1.setSelectedIndex(0);
     }
     
+    public void saveEmployeesToFile() {
+        try {
+            FileOutputStream file = new FileOutputStream("Employees.dat");
+            ObjectOutputStream outputFile = new ObjectOutputStream(file);
+            
+            for (int i = 0; i < employees.size(); i++) {
+                outputFile.writeObject(employees.get(i));
+            }
+            
+            outputFile.close();
+            
+            JOptionPane.showMessageDialog(null, "Successfuly saved");
+            this.dispose();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
+    public void saveEmployeesToFileDelete() {
+        try {
+            FileOutputStream file = new FileOutputStream("Employees.dat");
+            ObjectOutputStream outputFile = new ObjectOutputStream(file);
+            
+            for (int i = 0; i < employees.size(); i++) {
+                outputFile.writeObject(employees.get(i));
+            }
+            
+            outputFile.close();
+            
+            JOptionPane.showMessageDialog(null, "Successfuly deleted");
+            this.dispose();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
     public void populateArrayList() {
         try {
             FileInputStream file = new FileInputStream("Jobs.dat");
@@ -226,11 +262,29 @@ public class EditEmployee extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+       int selectedIndex = jComboBox1.getSelectedIndex();
+       
+       employees.remove(selectedIndex);
+       
+       saveEmployeesToFileDelete();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || 
+                jTextField3.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter all fields");
+        } else {
+            int selectedIndex = jComboBox1.getSelectedIndex();
+            
+            employees.get(selectedIndex).setFirstName(jTextField1.getText().trim());
+            employees.get(selectedIndex).setLastName(jTextField2.getText().trim());
+            employees.get(selectedIndex).setStaffNr(Integer.parseInt(jTextField3.getText().trim()));
+            
+            Job job = jobs.get(jComboBox2.getSelectedIndex());
+            employees.get(selectedIndex).setJob(job);
+            
+            saveEmployeesToFile();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
