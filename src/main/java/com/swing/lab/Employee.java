@@ -12,32 +12,32 @@ import java.io.*;
  */
 public class Employee implements Serializable {
     
-   private String name;
-   private String surname;
+   private String firstName;
+   private String lastName;
    private Job job;
    private int staffNr;
 
-    public Employee(String name, String surname, Job job, int staffNr) {
-        this.name = name;
-        this.surname = surname;
+    public Employee(String firstName, String lastName, Job job, int staffNr) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.job = job;
         this.staffNr = staffNr;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String name) {
+        this.firstName = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String surname) {
+        this.lastName = surname;
     }
 
     public Job getJob() {
