@@ -4,17 +4,102 @@
  */
 package com.swing.lab;
 
+import javax.swing.*;
+import java.util.*;
+import java.io.*;
+import java.text.DecimalFormat;
+
 /**
  *
  * @author edwardjanson
  */
 public class AddEmployee extends javax.swing.JFrame {
+    
+    ArrayList<Job> jobs;
+    ArrayList<Employee> employees;
+    DecimalFormat formatter;
 
     /**
      * Creates new form AddEmployee
      */
     public AddEmployee() {
         initComponents();
+        
+        formatter = new DecimalFormat("#,###.00");
+        
+        this.jobs = new ArrayList<Job>();
+        this.employees = new ArrayList<Employee>();
+        populateArrayList();
+        
+        String [] jobsArray = new String[jobs.size()];
+        
+        for (int i = 0; i < jobs.size(); i++) {
+            jobsArray[i] = jobs.get(i).getNameOfJob() + ", R" + formatter.format(jobs.get(i).getSalary());
+        } 
+                
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(jobsArray));
+    }
+    
+    public void saveEmployeesToFile() {
+        try {
+            FileOutputStream file = new FileOutputStream("Employees.dat");
+            ObjectOutputStream outputFile = new ObjectOutputStream(file);
+            
+            for (int i = 0; i < employees.size(); i++) {
+                outputFile.writeObject(employees.get(i));
+            }
+            
+            outputFile.close();
+            
+            JOptionPane.showMessageDialog(null, "Successfuly saved");
+            this.dispose();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
+    public void populateArrayList() {
+        try {
+            FileInputStream file = new FileInputStream("Jobs.dat");
+            ObjectInputStream inputFile = new ObjectInputStream(file);
+            
+            boolean endOfFile = false;
+            
+            while (!endOfFile) {
+                try {
+                    jobs.add((Job) inputFile.readObject());
+                } catch (EOFException e) {
+                    endOfFile = true;
+                } catch (Exception f) {
+                    JOptionPane.showMessageDialog(null, f.getMessage());
+                }
+            }
+            
+            inputFile.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        
+        try {
+            FileInputStream file2 = new FileInputStream("Employees.dat");
+            ObjectInputStream inputFile2 = new ObjectInputStream(file2);
+            
+            boolean endOfFile = false;
+            
+            while (!endOfFile) {
+                try {
+                    employees.add((Employee) inputFile2.readObject());
+                } catch (EOFException e) {
+                    endOfFile = true;
+                } catch (Exception f) {
+                    JOptionPane.showMessageDialog(null, f.getMessage());
+                }
+            }
+            
+            inputFile2.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }
 
     /**
@@ -119,7 +204,22 @@ public class AddEmployee extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
+        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || 
+                jTextField3.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter all fields");
+        } else {
+            String firstName = jTextField1.getText().trim();
+            String lastName = jTextField2.getText().trim();
+            int jobIndex = jComboBox1.getSelectedIndex();
+            Job job = jobs.get(jobIndex);
+            int staffNr = Integer.parseInt(jTextField3.getText().trim());
+            
+            Employee employee = new Employee(firstName, lastName, job, staffNr);
+            employees.add(employee);
+            
+            saveEmployeesToFile();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
